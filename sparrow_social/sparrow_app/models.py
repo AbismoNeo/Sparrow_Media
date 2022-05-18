@@ -1,19 +1,18 @@
 from django.db import models
-from django.forms import CharField, DateField
+from django.contrib.auth.models import User
+from django.forms import CharField, DateField, ModelForm
 from django.utils import timezone
 # Create your models here.
 
 # Modelo Sparrow
 # Clase usuario con los datos del usuario
-class users(models.Model):
-    fullname = models.CharField(verbose_name = "Nombre Completo",max_length = 100)
+class user_profile(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    username = models.CharField(verbose_name = "Sobrenombre", max_length= 15)
     bday = models.DateField(verbose_name = "Fecha de Nacimiento")
-    username = models.CharField(verbose_name = "Usuario", max_length = 20)
-    password = models.CharField(verbose_name = "Contraseña", max_length = 15)
-    email = models.EmailField(verbose_name = "Correo Electronico")
     description  = models.TextField (verbose_name="Descripcion")
     regdate = models.DateTimeField(default = timezone.now, verbose_name="Fecha de Registro" )
-    profilepic = models.ImageField(verbose_name="Imagen de perfil")
+    profilepic = models.ImageField(verbose_name="Imagen de perfil", blank =True, null = True)
     bgColor = models.CharField(verbose_name = "Color de Fondo", max_length = 15)
     txtColor = models.CharField(verbose_name = "Color de Texto", max_length= 15)
     
@@ -21,16 +20,16 @@ class users(models.Model):
         return f'Perfil de {self.username}'
     
     class Meta:
-        verbose_name = 'Usuario'
-        verbose_name_plural = 'Usuarios'
-    
+
+        verbose_name = 'Perfil'
+        verbose_name_plural = 'Perfiles'
 
 #Clase message con los datos de los post
 class message(models.Model):
     datepost = models.DateTimeField(default = timezone.now, verbose_name = "Fecha de posteo")
-    user_id = models.ForeignKey(users, on_delete=models.CASCADE, verbose_name="ID de usuario")
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ID de usuario")
     Text = models.TextField(max_length=150, verbose_name = "Mensaje")
-    Image = models.ImageField(verbose_name="Imagen")
+    Image = models.ImageField(verbose_name="Imagen", blank =True, null = True )
 
     class Meta:   
         ordering = ['-datepost']
@@ -42,8 +41,8 @@ class message(models.Model):
 
 # Clase list_follow con los datos de lista de followers
 class list_follow(models.Model):
-    id_list = models.ForeignKey(users,related_name="Seguidor", on_delete=models.CASCADE, verbose_name="Id de Usuario")
-    id_friend = models.ForeignKey(users, related_name="Siguiendo", on_delete=models.CASCADE, verbose_name="Id de Seguidor")
+    id_list = models.ForeignKey(User,related_name="Seguidor", on_delete=models.CASCADE, verbose_name="Id de Usuario")
+    id_friend = models.ForeignKey(User, related_name="Siguiendo", on_delete=models.CASCADE, verbose_name="Id de Seguidor")
     follow_date = models.DateTimeField(verbose_name="Fecha de seguimiento")
 
     def __str__(self):
