@@ -7,27 +7,28 @@ from django.utils import timezone
 # Modelo Sparrow
 # Clase usuario con los datos del usuario
 class user_profile(models.Model):
+    Colors=(("NEGRO", "Negro"), ("BLANCO", "Blanco"), ("GRIS","Gris"))
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    username = models.CharField(verbose_name = "Sobrenombre", max_length= 15)
+    username = models.CharField(verbose_name = "Nombre a Mostrar", max_length= 15)
     bday = models.DateField(verbose_name = "Fecha de Nacimiento")
     description  = models.TextField (verbose_name="Descripcion")
     regdate = models.DateTimeField(default = timezone.now, verbose_name="Fecha de Registro" )
     profilepic = models.ImageField(verbose_name="Imagen de perfil", blank =True, null = True)
-    bgColor = models.CharField(verbose_name = "Color de Fondo", max_length = 15)
-    txtColor = models.CharField(verbose_name = "Color de Texto", max_length= 15)
+    bgColor = models.CharField(verbose_name = "Color de Fondo", max_length = 15, choices=Colors, default="Blanco")
+    txtColor = models.CharField(verbose_name = "Color de Texto", max_length= 15, choices=Colors, default = "Negro")
     
     def __str__(self):
         return f'Perfil de {self.username}'
     
     class Meta:
-
+    
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfiles'
 
 #Clase message con los datos de los post
 class message(models.Model):
     datepost = models.DateTimeField(default = timezone.now, verbose_name = "Fecha de posteo")
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ID de usuario")
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ID de usuario", related_name = "posts")
     Text = models.TextField(max_length=150, verbose_name = "Mensaje")
     Image = models.ImageField(verbose_name="Imagen", blank =True, null = True )
 
