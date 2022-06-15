@@ -1,6 +1,8 @@
+from dataclasses import fields
+from tkinter.ttk import Widget
 from django import forms
-from django.forms import ModelForm, MultipleChoiceField, ChoiceField, Form, SelectMultiple
-from .models import user_profile
+from django.forms import ModelForm, MultipleChoiceField, ChoiceField, Form, CheckboxSelectMultiple
+from .models import message, user_profile
 from django.contrib.auth.models import  User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import password_validation
@@ -28,6 +30,12 @@ class UserForm(UserCreationForm):
                                 min_length=4, 
                                 required=True, 
                                 widget=(forms.TextInput(attrs={'class': 'form-control'})))
+    email = forms.EmailField(label = 'Email',
+                                max_length=50, 
+                                min_length=10, 
+                                required=True, 
+                                widget=(forms.EmailInput(attrs={'class': 'form-control'}))
+                                )                                
     password1 = forms.CharField(
                                 label='Contraseña',
                                 widget=(forms.PasswordInput(attrs={'class': 'form-control'})), 
@@ -39,21 +47,46 @@ class UserForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2',)
+        fields = ('username', 'first_name', 'last_name','email', 'password1', 'password2',)
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['username'].help_text = None
+        self.fields['first_name'].help_text = None
+        self.fields['last_name'].help_text = None
+        self.fields['email'].help_text = None
+        self.fields['password1'].help_text = None
+        self.fields['password2'].help_text = None
+
+
 
 class User_ProfileForm (forms.ModelForm):
     class Meta:
         model = user_profile
-        bgColor = forms.MultipleChoiceField(widget=forms.Select(choices=user_profile.Colors) )
-        txtColor= forms.MultipleChoiceField(widget=forms.Select(choices=user_profile.Colors) )
+        # bgColor = forms.MultipleChoiceField(widget=forms.Select(choices=user_profile.Colors) )
+        # txtColor= forms.MultipleChoiceField(widget=forms.Select(choices=user_profile.Colors) )
         bday = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'), input_formats=('%d/%m/%Y',))
         # fields = '__all__'
-        exclude = ['user']
+        exclude = ['user','regdate','bgColor','txtColor' ]
         labels = {
                     'username':'Nombre Usuario (a mostrar)',
                     'bday':'Cumpleaños',
                     'description':'Biografía',
-                    'regdate':'Fecha de Registro',
                     'profilepic':'Foto de Perfil',
-                    'bgColor':'Color de Fondo',
-                    'txtColor':'Color de Texto'}
+                    # 'bgColor':'Color de Fondo',
+                    # 'txtColor':'Color de Texto'
+                    }
+
+
+class PostForm(forms.ModelForm):
+    Text = forms.CharField(widget = forms.Textarea(attrs={'class':'form-control w-100', 'id':'PostBox','rows':'3','placeholder':'¿Que estas haciendo?'}))
+    class Meta:
+        model = message
+        fields=['Text']
+        # exclude = ['Image','datepost','user_id']
+        # labels = {'Text ':''}
+
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['Text'].help_text = None
+        self.fields['Text'].required = False
+        self.fields['Text'].label =None

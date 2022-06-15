@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'sparrow_social.urls'
 
 TEMPLATES = [
@@ -120,6 +121,10 @@ USE_TZ = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 STATIC_URL = 'static/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0:8000']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

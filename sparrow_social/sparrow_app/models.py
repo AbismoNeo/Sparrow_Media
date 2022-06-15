@@ -13,7 +13,7 @@ class user_profile(models.Model):
     bday = models.DateField(verbose_name = "Fecha de Nacimiento")
     description  = models.TextField (verbose_name="Descripcion")
     regdate = models.DateTimeField(default = timezone.now, verbose_name="Fecha de Registro" )
-    profilepic = models.ImageField(verbose_name="Imagen de perfil", blank =True, null = True)
+    profilepic = models.ImageField(upload_to='media/profiles/', verbose_name="Imagen de perfil", blank =True, null = True)
     bgColor = models.CharField(verbose_name = "Color de Fondo", max_length = 15, choices=Colors, default="Blanco")
     txtColor = models.CharField(verbose_name = "Color de Texto", max_length= 15, choices=Colors, default = "Negro")
     
@@ -28,7 +28,7 @@ class user_profile(models.Model):
 #Clase message con los datos de los post
 class message(models.Model):
     datepost = models.DateTimeField(default = timezone.now, verbose_name = "Fecha de posteo")
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ID de usuario", related_name = "posts")
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "posts")
     Text = models.TextField(max_length=150, verbose_name = "Mensaje")
     Image = models.ImageField(verbose_name="Imagen", blank =True, null = True )
 

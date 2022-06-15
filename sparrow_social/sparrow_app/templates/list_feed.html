@@ -1,11 +1,11 @@
 {% load static %}
 <ul class="list-unstyled">
-    {% for post in posts %}         
+    {% for post in postslist %}         
     <li class="timeline-item">
         <div class="card card-white grid-margin">
             <div class="card-body">
                 <div class="timeline-item-header">
-                {% for profile in profiles %}
+                {% for profile in profilelist %}
                     {% if post.user_id == profile.user %}
                     <img src="{{ profile.profilepic }}" alt="" />
                     <p>{{ profile.username }} <span>Posteó un mensaje</span></p>
@@ -14,10 +14,10 @@
                     <small>{{ post.datepost }}</small>
                 </div>
                 <div class="timeline-item-post">
-                    <p>{{ post.Text }}</p>
+                    <p><small>{{ post.Text }}</small></p>
                     <div class="timeline-options">
-                        <a href="#"><i class="fa fa-thumbs-up"></i> Like </a>
-                        <a href="#"><i class="fa fa-comment"></i> Comentarios </a>
+                        <a href="#"><small><i class="fa fa-thumbs-up"></i> Like </small></a>
+                        <a href="#"><small><i class="fa fa-comment"></i> Comentarios </small></a>
                     </div>
                 </div>
             </div>

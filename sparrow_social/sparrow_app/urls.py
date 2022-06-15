@@ -8,15 +8,15 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('feed/',views.feed, name = "feed"),
+    # path('feed/',views.feed, name = "feed"),
     path('',views.home, name = "home"),
     # path('post/<str:id_post>/',views.feed, name = "postit"),
     # path('profile/', 'views.profile', name = 'profile'),
     # path('profile/<str : username>/', 'views.profile', name = 'profile'),
     path('register/',views.register, name = "register"),
-    # path('login/',  LoginView.as_view(template_name = 'social/login.html'), name = 'login'),
-    # path('logout/', LoginView.as_view(template_name = 'social/logout.html'), name = 'logout'),
-    # path('post/', 'views.post', name = 'post'),
+    path('login/',  LoginView.as_view(template_name = 'login.html'), name = 'login'),
+    path('logout/', LogoutView.as_view(),name = 'logout'),
+    #path('post/', views.posting, name = 'posting'),
     # path('follow/', 'views.follow', name = 'follow'),
     # path('unfollow/', 'views.unfollow', name = 'unfollow'),
     # path('followers/', 'views.followers', name = 'followers'),

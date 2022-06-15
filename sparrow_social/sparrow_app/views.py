@@ -1,53 +1,76 @@
 from django import shortcuts
-from django.shortcuts import redirect, render
+from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import user_profile, message
-from .forms import UserForm, User_ProfileForm
+from django.shortcuts import redirect, render
+from django.template import RequestContext
+from .models import user_profile, message, list_follow
+from .forms import UserForm, User_ProfileForm, PostForm
+from django.contrib import messages
+from django.contrib.auth.models import User as user
+from django.views.decorators.csrf import csrf_exempt
+
+
 # Create your views here.
 
-################# FEED VIEW #################
-def feed (request):
-    if request.user.is_authenticated:
-        
-        return render(request, 'feed.html')
-    else:
-        return render(request, 'home.html')
-
-################# HOME VIEW #################
+################# home VIEW #################
 def home (request):
     if request.user.is_authenticated:
-        posts = message.objects.all()
-        profiles = user_profile.objects.all()
-        # for profile in profiles:
-        #     if posts.user_id == profiles.user:
-        #         profiles = profile.objects.all()
-        #         break
-        #     else:
-        #         continue
-        context ={'posts':posts,'profiles':profiles}
-        return render(request, 'feed.html',context)
-    else: 
-        return render(request, 'home.html')
+        try:
+            list_following = list_follow.objects.get(id_list = request.user.id)
+            list_follow_count = list_following.id_list.count() 
+        except:
+            list_follow_count = 0
+        try:    
+            list_friendship = list_follow.objects.get(id_friend = request.user.id)
+            list_friend_count = list_friendship.id_friend.count()
+        except:
+            list_friend_count = 0
+        postslist = message.objects.all()
+        profilelist= user_profile.objects.all()
+        postbox = PostForm(request.POST)
+        user_data = profilelist.get( user = request.user.id)
+        
+        if request.method =='POST':
+            if postbox.is_valid():
+                postbox.instance.user_id = request.user
+                try:
+                    postbox.save()
+                    messages.success(request,'Post actualizado correctamente!')
+                except:
+                    messages.error(request,'Post no realizado correctamente!')
+                return redirect('home')
+        else:
+            form = PostForm()
+        context ={'postslist':postslist,'profilelist':profilelist, 'user_data': user_data, 'Form':form,'list_follow_count':list_follow_count,'list_friend_count':list_friend_count}
+            #context ={'postslist':postslist,'Form':form}
+        return render(request, 'home.html', context)
+    else:
+        return redirect('login')
+
 
 ################# REGISTER VIEW #################
+@csrf_exempt
 def register(request):
+    user = UserForm(request.POST)
+    user_profile = User_ProfileForm(request.POST, request.FILES)            
     if request.method =='POST':
-        user = UserForm(request.POST, prefix= "user")
-        profile = User_ProfileForm(request.POST, prefix="userprofile")
-        
-        print(user)
-        print(profile)
-        if user.is_valid() and profile.is_valid() and user.password1 and user.password2 and user.password1==user.password2:            
-            user = user.save()
-            user_profile = user_profile.save(commit=False)
-            user_profile.user = user
-            user_profile.save()
-            return HttpResponseRedirect('home.html')
+        if user.is_valid():            
+            try:
+                user = user.save()
+            except:
+                print(user.non_field_errors)
+                print(user.errors)
+        if  user_profile.is_valid():
+            try:
+                user_profile = user_profile.save(commit=False)
+                user_profile.user.pk = user.pk
+                user_profile.save()
+            except:
+                print(user_profile.non_field_errors)
+                print(user_profile.errors)
     else:
-        user = UserForm(request.POST, prefix= "user")
-        profile = User_ProfileForm(request.POST, prefix="userprofile")
-        print(user)
-        print(profile)
-        return render(request,'register.html',{'UserForm':UserForm,'User_ProfileForm':User_ProfileForm})
-
-        
+        user = UserForm()
+        user_profile = User_ProfileForm()
+    return render(request,'register.html',{
+                'user':UserForm,
+                'profile':User_ProfileForm})
