@@ -20,13 +20,13 @@ class UserForm(UserCreationForm):
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     first_name = forms.CharField(
                                 label='Nombre(s)',
-                                max_length=12, 
+                                max_length=32, 
                                 min_length=4, 
                                 required=True, 
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(
                                 label = 'Apellidos',
-                                max_length=12, 
+                                max_length=32, 
                                 min_length=4, 
                                 required=True, 
                                 widget=(forms.TextInput(attrs={'class': 'form-control'})))
@@ -68,8 +68,8 @@ class User_ProfileForm (forms.ModelForm):
         # fields = '__all__'
         exclude = ['user','regdate','bgColor','txtColor' ]
         labels = {
-                    'username':'Nombre Usuario (a mostrar)',
-                    'bday':'Cumpleaños',
+                    'watchname':'Nombre Usuario (a mostrar)',
+                    'bday':'Cumpleaños (dd/mm/yyyy)',
                     'description':'Biografía',
                     'profilepic':'Foto de Perfil',
                     # 'bgColor':'Color de Fondo',

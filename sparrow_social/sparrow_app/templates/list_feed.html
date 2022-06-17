@@ -1,26 +1,26 @@
 {% load static %}
-<ul class="list-unstyled">
+<ul class="list-unstyled" >
     {% for post in postslist %}         
-    <li class="timeline-item">
-        <div class="card card-white grid-margin">
-            <div class="card-body">
-                <div class="timeline-item-header">
+    <li class="timeline-item" style="margin:0px !important; padding:0px !important">
+        <div class="card card-white"  style="margin:10px !important; padding:10px !important">
+            
+            <div class="timeline-item-header">
                 {% for profile in profilelist %}
                     {% if post.user_id == profile.user %}
-                    <img src="{{ profile.profilepic }}" alt="" />
-                    <p>{{ profile.username }} <span>Posteó un mensaje</span></p>
+                    <a href="#"><img src="{{ profile.profilepic }}" alt="" /> </a>
+                    <p><a href="#" class="vinculos">{{ profile.watchname }} </a> <span>Posteó un mensaje</span></p>
                     {% endif %}
                 {% endfor %}
-                    <small>{{ post.datepost }}</small>
-                </div>
-                <div class="timeline-item-post">
-                    <p><small>{{ post.Text }}</small></p>
-                    <div class="timeline-options">
-                        <a href="#"><small><i class="fa fa-thumbs-up"></i> Like </small></a>
-                        <a href="#"><small><i class="fa fa-comment"></i> Comentarios </small></a>
-                    </div>
+                <small>{{ post.datepost }}</small>
+            </div>
+            <div class="timeline-item-post">
+                <p><small>{{ post.Text }}</small></p>
+                <div class="timeline-options">
+                    <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Like </small></a>
+                    <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Comentarios </small></a>
                 </div>
             </div>
+            
         </div>
     </li>
     {% endfor %}

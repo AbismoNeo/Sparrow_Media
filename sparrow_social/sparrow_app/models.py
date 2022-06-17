@@ -9,7 +9,7 @@ from django.utils import timezone
 class user_profile(models.Model):
     Colors=(("NEGRO", "Negro"), ("BLANCO", "Blanco"), ("GRIS","Gris"))
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    username = models.CharField(verbose_name = "Nombre a Mostrar", max_length= 15)
+    watchname = models.CharField(verbose_name = "Nombre a Mostrar", max_length= 15)
     bday = models.DateField(verbose_name = "Fecha de Nacimiento")
     description  = models.TextField (verbose_name="Descripcion")
     regdate = models.DateTimeField(default = timezone.now, verbose_name="Fecha de Registro" )
@@ -18,7 +18,7 @@ class user_profile(models.Model):
     txtColor = models.CharField(verbose_name = "Color de Texto", max_length= 15, choices=Colors, default = "Negro")
     
     def __str__(self):
-        return f'Perfil de {self.username}'
+        return f'Perfil de {self.user}'
     
     class Meta:
     
@@ -47,8 +47,7 @@ class list_follow(models.Model):
     follow_date = models.DateTimeField(verbose_name="Fecha de seguimiento")
 
     def __str__(self):
-        
-        return self.id_f
+        return self.id_list.username
     
     class Meta:
         verbose_name = 'Lista de Seguidores'
