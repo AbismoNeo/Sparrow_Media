@@ -2,7 +2,9 @@
     <h4 class="card-title">Noticias</h4>
     <ul class="list-inline">
         {% for noti in news %}
-        <li class="list-inline-item"><small>{{ noti.Text}}</small></li>
-        <hr />
+        {% if forloop.counter < 6 %}
+            <li class="list-inline-item"><small>{{ noti.Text}}</small></li>
+            <hr />
+        {% endif %}
         {% endfor %}
     </ul>

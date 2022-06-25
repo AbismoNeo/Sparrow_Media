@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import CharField, DateField, ModelForm
 from django.utils import timezone
+from pathlib import Path
+import os
 # Create your models here.
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Modelo Sparrow
 # Clase usuario con los datos del usuario
 class user_profile(models.Model):

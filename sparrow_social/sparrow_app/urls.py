@@ -12,7 +12,7 @@ urlpatterns = [
     path('',views.home, name = "home"),
     # path('post/<str:id_post>/',views.feed, name = "postit"),
     # path('profile/', 'views.profile', name = 'profile'),
-    # path('profile/<str : username>/', 'views.profile', name = 'profile'),
+    path('profile-<int:id>/', views.profile, name = 'profile'),
     path('register/',views.register, name = "register"),
     path('login/',  LoginView.as_view(template_name = 'login.html'), name = 'login'),
     path('logout/', LogoutView.as_view(),name = 'logout'),

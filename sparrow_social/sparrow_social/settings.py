@@ -120,7 +120,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 STATIC_URL = 'static/'
+STATIC_ROOT = '/static/'
+
+# MEDIA_URL = '/sparrow_social/media/profiles/'
+# MEDIA_ROOT = '/sparrow_social/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/profiles')
+MEDIA_URL = '/media/profiles/'
+
+
+
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 

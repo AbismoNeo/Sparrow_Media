@@ -1,27 +1,21 @@
-{% load static %}
 <ul class="list-unstyled" >
-    {% for post in postslist %}         
-    <li class="timeline-item" style="margin:0px !important; padding:0px !important">
-        <div class="card card-white"  style="margin:10px !important; padding:10px !important">
-            
-            <div class="timeline-item-header">
-                {% for profile in profilelist %}
-                    {% if post.user_id == profile.user %}
-                    <a href="#"><img src="{{ profile.profilepic }}" alt="" /> </a>
-                    <p><a href="#" class="vinculos">{{ profile.watchname }} </a> <span>Posteó un mensaje</span></p>
-                    {% endif %}
-                {% endfor %}
-                <small>{{ post.datepost }}</small>
-            </div>
-            <div class="timeline-item-post">
-                <p><small>{{ post.Text }}</small></p>
-                <div class="timeline-options">
-                    <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Like </small></a>
-                    <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Comentarios </small></a>
+    {% for mensajes in datos_mensajes %}
+        <li class="timeline-item" style="margin:0px !important; padding:0px !important">
+            <div class="card card-white"  style="margin:10px !important; padding:10px !important">
+                <div class="timeline-item-header">
+                        <a href="{% url 'profile' mensajes.id.pk %}"><img src="/{{ mensajes.profilepic }}" /> </a>
+                        <p><a href="{% url 'profile' mensajes.id.pk %}" class="vinculos">{{ mensajes.watchname }} </a> <span>Posteó un mensaje</span></p>
+                    <small>{{ mensajes.datepost }}</small>
+                </div>
+                <div class="timeline-item-post">
+                    <p><small>{{ mensajes.Text }}</small></p>
+                    <div class="timeline-options">
+                        <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Like </small></a>
+                        <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Comentarios </small></a>
+                    </div>
                 </div>
             </div>
-            
-        </div>
-    </li>
+        </li>
     {% endfor %}
 </ul>
+{{ datos_mensajes.forloop.counter.watchname }}
