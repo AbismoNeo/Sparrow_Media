@@ -10,10 +10,13 @@
                 <h3 class="text-center h6 mt-2">@{{ user_data.watchname }}</h3>
                 {% comment %} <p class="text-center small">{{ user.username }}</p> {% endcomment %}
                 <br />
-                <a href="" class="btn btn-info btn-sm" style="width:120px">{{ list_follow_count }}  Seguidores</a>
+                {% comment %} SEGUIDORES Y SU LINK  {% endcomment %}
+                <a href="{% url 'followers' user.id %}" class="btn btn-info btn-sm" style="width:120px">{{ list_follow_count }}  Seguidores</a>
                 <br/><br/>
-                <a href="" class="btn btn-info btn-sm" style="width:120px">{{ list_friend_count }}  Siguiendo</a>
+                {% comment %} SIGUIENDO A...  Y SU LINK  {% endcomment %}
+                <a href="{% url 'following' user.id %}" class="btn btn-info btn-sm" style="width:120px">{{ list_friend_count }}  Siguiendo</a>
                 <hr />
+                {% comment %} MODIFICAR PERFIL  {% endcomment %}
                 <a href="" class="btn btn-outline-danger btn-sm" style="width:120px">Modifica Perfil</a>
                 <br /><br />
                 <a href="{% url 'logout' %}" class="btn btn-dark btn-sm" style="width:120px"> Logout </a>

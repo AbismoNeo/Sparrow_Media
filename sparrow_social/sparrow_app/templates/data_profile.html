@@ -3,7 +3,9 @@
 <div class="card-body">
     <img align="center" src="/{{ user_data_visit.profilepic }}" class="user-profile-image rounded-circle" alt="" />
     <h4 class="text-center h6 mt-2">@{{ user_data_visit.watchname }}</h4>
-    <h6 align="center"><a href="">{{ count_follow }}  Seguidores</a> &nbsp; <a href="">{{ count_friends }}  Siguiendo</h6></a>
+    <h6 align="center">
+                        <a href="{% url 'followers' user_visit.id %}">{{ count_follow }}  Seguidores</a> &nbsp; 
+                        <a href="{% url 'following' user_visit.id %}">{{ count_friends }}  Siguiendo</h6></a>
     <br/>
     {% if follow_user == True %}
     <p class="btn disabled"> YA LO SIGUES </p>
@@ -12,7 +14,7 @@
     {% endif %}
     <hr />
     <div class="card-heading clearfix mt-3">
-        <p align="justify"><small> Soy {{ user_visit.first_name }} {{ user_visit.last_name }} nací el {{user_data_visit.bday}} mi correo electrónico es {{ user.email }}
+        <p align="justify"><small> Soy {{ user_visit.first_name }} {{ user_visit.last_name }} nací el {{user_data_visit.bday}} mi correo electrónico es {{ user_visit.email }}
         me describo como {{ user_data_visit.description }} </small></p>
     </div>
     <hr />

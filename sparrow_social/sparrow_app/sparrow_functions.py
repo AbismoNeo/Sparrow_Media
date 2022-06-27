@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from django import shortcuts
 from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,10 +14,27 @@ import sys
 
 ###################### SUGERENCIAS DE CONTACTO ######################
 def sugerencias():
-    suggests=[]
+    profiles = user_profile.objects.all()
+    datos_salida = []
+    temp = []
     for i in range(6):
-            suggests.append ((user_profile.objects.all().order_by('?')[:1].get()))
-    return suggests
+        existe = False
+        temporal  = (user.objects.all().order_by('?')[:1].get())
+        for t in temp:
+            if temporal.id == t:
+                existe = True
+        if existe == False:
+            temp.append(temporal.id)
+            for userp in profiles:
+                if userp.user.id == temporal.id:
+                    datos ={
+                        'id':temporal.id,
+                        'profilepic':userp.profilepic,
+                        'watchname': userp.watchname
+                        }
+                    datos_salida.append(datos)
+                    print(datos)
+    return datos_salida
 
 ###################### NOTICIAS DE LA PLATAORMA ######################
 def noticias():
@@ -61,7 +79,42 @@ def lista_mensajes_amigos(request):
                             "Text" : mensaje.Text,
                             }
                         mensajes_amigos.append(datos_mensajes_amigos)
-    print(mensajes_amigos)
     # profilelist = user_profile.objects.filter(user = lista_amigos)
     
     return ( mensajes_amigos )
+
+def contador_profile(request,id):
+    datos_contador = []
+    list_follows = list_follow.objects.filter(id_friend = id )
+    list_friends = list_follow.objects.filter(id_list = id )
+    try:
+        following = list_follow.objects.filter( id_friend = user.id, id_list = id)
+        if following.count > 0:
+            follow_user = True 
+        else:
+            follow_user = False
+    except:
+        follow_user = 'NO FUNCIONA'
+
+    try:
+        list_friendship = list_follow.objects.filter(id_list = request.user)
+        list_friend_count = list_friendship.count() 
+    except:
+        list_friend_count = 0
+    try:    
+        
+        list_following = list_follow.objects.filter(id_friend = request.user)
+        list_follow_count = list_following.count()
+    except:
+        list_follow_count = 0
+
+    count_follow = list_follows.count()
+    count_friends = list_friends.count()
+    datos_contador= {
+                'follow_user' : follow_user,
+                'count_follow' : count_follow, 
+                'count_friends' : count_friends, 
+                'list_follow_count' : list_follow_count,
+                'list_friend_count' : list_friend_count,
+                }
+    return(datos_contador)

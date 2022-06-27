@@ -1,16 +1,18 @@
 {% load static %}
+
+
 <ul class="list-unstyled" >
-    {% for datos in datos_mensajes %}         
+    {% for post in postslist %}         
+    {{ profile_me }}
     <li class="timeline-item" style="margin:0px !important; padding:0px !important">
         <div class="card card-white"  style="margin:10px !important; padding:10px !important">
-            
             <div class="timeline-item-header">
-                    <a href="#"><img src="/{{ datos.profilepic }}" alt="{{ datos.watchname }}" /> </a>
-                    <p><a href="#" class="vinculos">{{ datos.watchname }} </a> <span>Posteó un mensaje</span></p>
-                <small>{{ datos.datepost }}</small>
+                    <a href="{% url 'profile' post.user_id.id %}"><img src="/{{ user_data_visit.profilepic }}" alt="{{ user_data_visit.watchname }}" /> </a>
+                    <p><a href="{% url 'profile' post.user_id.id %}" class="vinculos">{{ user_data_visit.watchname }} </a> <span>Posteó un mensaje</span></p>
+                <small>{{ post.datepost }}</small>
             </div>
             <div class="timeline-item-post">
-                <p><small>{{ datos.Text }}</small></p>
+                <p><small>{{ post.Text }}</small></p>
                 <div class="timeline-options">
                     <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Like </small></a>
                     <a href="#" class="btn btn-outline-dark btn-sm" style="width:90px !important;"><small>Comentarios </small></a>
